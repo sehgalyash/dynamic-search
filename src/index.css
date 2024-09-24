@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.App-container {
+  @apply bg-indigo-100 py-2 pr-2 pl-12 h-screen w-full;
+}
+
+.page {
+  @apply w-full h-full rounded-lg drop-shadow-xl bg-white;
+}
+
+.projects-page {
+  background-image: url("./assets/projects-page.png");
+  @apply bg-cover relative overflow-hidden;
+}
