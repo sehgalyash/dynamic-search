@@ -22,17 +22,9 @@ const DynamicIslandWrapper = ({ children }: { children: React.ReactNode }) => {
 const DynamicIsland = (): JSX.Element => {
   const [showSearch, setShowSearch] = React.useState<boolean>(false);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
-  const [userSearchQueryList, setUserSearchQueryList] = React.useState<
-    string[]
-  >([]);
-
-  const handleUserSearchQuery = (query: string) => {
-    setUserSearchQueryList((prev) => [...prev, query]);
-  };
 
   const handleApplySearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleUserSearchQuery(searchQuery);
       handleShowSearch(false);
       setSearchQuery("");
     }
@@ -121,11 +113,6 @@ const DynamicIsland = (): JSX.Element => {
                 />
                 <input
                   className="bg-transparent focus:outline-none px-1.5 text-white text-sm w-full placeholder:text-white/60"
-                  // onBlur={() => {
-                  //   if (searchQuery === "") {
-                  //     handleShowSearch(false);
-                  //   }
-                  // }}
                   autoFocus
                   placeholder="Search for anything..."
                   value={searchQuery}
@@ -158,7 +145,7 @@ const DynamicIsland = (): JSX.Element => {
           transition={{ delay: 0.6 }}
         >
           {searchQuery.length > 0 ? (
-            <></>
+            <div className="search-chat-container"></div>
           ) : (
             <div className="search-suggestions-wrapper flex items-center justify-center gap-2">
               <SuggestionButton
