@@ -5,6 +5,10 @@ import {
   IconCornerDownLeft,
   IconHistory,
   IconX,
+  IconEdit,
+  IconCopy,
+  IconLink,
+  IconDownload,
 } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -19,9 +23,129 @@ const DynamicIslandWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+const HighPriorityList = () => {
+  const projects = [
+    {
+      name: "CW33 - BAU - SASA Extra 15% Off - W_Beauty - SGHK",
+      dueDate: "Oct 25",
+      status: "DRAFT",
+      creatives: 4,
+      sizes: 40,
+      campaign: "LUX_FESTIVAL 3RD ANNIVERSARY",
+    },
+    {
+      name: "CW33 - BAU - Haven Lifestyle Up to 55% Off - SG - Lifestyle",
+      dueDate: "Oct 22",
+      status: "DRAFT",
+      creatives: 4,
+      sizes: 40,
+      campaign: "LUX_FESTIVAL 3RD ANNIVERSARY",
+    },
+    {
+      name: "CW33 - BAU - Haven Lifestyle Up to 55% Off - SG - Lifestyle",
+      dueDate: "Oct 22",
+      status: "DRAFT",
+      creatives: 4,
+      sizes: 40,
+      campaign: "LUX_FESTIVAL 3RD ANNIVERSARY",
+    },
+    {
+      name: "CW33 - BAU - Haven Lifestyle Up to 55% Off - SG - Lifestyle",
+      dueDate: "Oct 22",
+      status: "DRAFT",
+      creatives: 4,
+      sizes: 40,
+      campaign: "LUX_FESTIVAL 3RD ANNIVERSARY",
+    },
+    // Add more projects as needed
+  ];
+
+  return (
+    <motion.div
+      className="overflow-x-auto rounded-lg border"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.2 }}
+    >
+      <table className="min-w-full bg-white">
+        <thead>
+          <tr className="bg-gray-100 text-gray-600 text-left text-xs font-semibold uppercase tracking-wider">
+            <th className="px-4 py-2">Name</th>
+            <th className="px-4 py-2">Due date</th>
+            <th className="px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody className="text-gray-600 text-sm">
+          {projects.map((project, index) => (
+            <tr
+              key={index}
+              className="border-b border-gray-200 hover:bg-gray-50"
+            >
+              <td className="px-4 py-2">
+                <div className="flex items-center">
+                  <img
+                    src="https://images.unsplash.com/photo-1723908183237-d8af011f465d?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Project thumbnail"
+                    className="w-10 h-10 rounded mr-3"
+                  />
+                  <div>
+                    <p className="font-semibold text-gray-800">
+                      {project.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {project.status} • {project.creatives} creatives •{" "}
+                      {project.sizes} sizes • {project.campaign}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <td className="px-4 py-2">{project.dueDate}</td>
+              <td className="px-4 py-2">
+                <div className="flex space-x-2">
+                  <IconEdit
+                    size={18}
+                    className="text-gray-500 hover:text-gray-700 cursor-pointer"
+                  />
+                  <IconCopy
+                    size={18}
+                    className="text-gray-500 hover:text-gray-700 cursor-pointer"
+                  />
+                  <IconLink
+                    size={18}
+                    className="text-gray-500 hover:text-gray-700 cursor-pointer"
+                  />
+                  <IconDownload
+                    size={18}
+                    className="text-gray-500 hover:text-gray-700 cursor-pointer"
+                  />
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </motion.div>
+  );
+};
+
+const UserMessage = ({ message }: { message: string }) => (
+  <div className="flex items-start gap-2 mb-8 justify-end">
+    <div className="bg-gray-100 rounded-lg p-2 max-w-[80%]">
+      <p className="text-sm">{message}</p>
+    </div>
+    <img
+      src={USER_PROFILE_IMAGE}
+      className="w-8 h-8 rounded-full mt-1"
+      alt="user-avatar"
+    />
+  </div>
+);
+
 const DynamicIsland = (): JSX.Element => {
   const [showSearch, setShowSearch] = React.useState<boolean>(false);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [showHighPriorityList, setShowHighPriorityList] =
+    React.useState<boolean>(false);
 
   const handleApplySearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -32,12 +156,21 @@ const DynamicIsland = (): JSX.Element => {
 
   const handleShowSearch = (toggle: boolean) => {
     setShowSearch(toggle);
+    if (!toggle) {
+      setShowHighPriorityList(false);
+    }
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Escape") {
       handleShowSearch(false);
     }
+  };
+
+  const handleHighPriorityClick = () => {
+    setSearchQuery("High priority");
+    setShowHighPriorityList(true);
+    handleShowSearch(true);
   };
 
   return (
@@ -70,12 +203,7 @@ const DynamicIsland = (): JSX.Element => {
               </div>
               <AskAIButton onClick={() => handleShowSearch(true)} />
               <div className="flex items-center gap-1">
-                <SuggestionButton
-                  onClick={() => {
-                    handleShowSearch(true);
-                    setSearchQuery("High priority");
-                  }}
-                >
+                <SuggestionButton onClick={handleHighPriorityClick}>
                   High priority
                 </SuggestionButton>
                 <SuggestionButton
@@ -144,13 +272,25 @@ const DynamicIsland = (): JSX.Element => {
           exit={{ opacity: 0, y: -10 }}
           transition={{ delay: 0.6 }}
         >
-          {searchQuery.length > 0 ? (
+          {showHighPriorityList ? (
+            <>
+              <UserMessage message="High priority" />
+              <div className="flex items-start gap-2">
+                <img
+                  src={PixyAvatar}
+                  className="w-8 h-8 rounded-full"
+                  alt="pixy-avatar"
+                />
+                <HighPriorityList />
+              </div>
+            </>
+          ) : searchQuery.length > 0 ? (
             <div className="search-chat-container"></div>
           ) : (
             <div className="search-suggestions-wrapper flex items-center justify-center gap-2">
               <SuggestionButton
                 searchSuggestion
-                onClick={() => setSearchQuery("High priority")}
+                onClick={handleHighPriorityClick}
               >
                 High priority
               </SuggestionButton>
