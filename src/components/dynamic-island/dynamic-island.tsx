@@ -22,6 +22,21 @@ const DynamicIslandWrapper = ({ children }: { children: React.ReactNode }) => {
 const DynamicIsland = (): JSX.Element => {
   const [showSearch, setShowSearch] = React.useState<boolean>(false);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [userSearchQueryList, setUserSearchQueryList] = React.useState<
+    string[]
+  >([]);
+
+  const handleUserSearchQuery = (query: string) => {
+    setUserSearchQueryList((prev) => [...prev, query]);
+  };
+
+  const handleApplySearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleUserSearchQuery(searchQuery);
+      handleShowSearch(false);
+      setSearchQuery("");
+    }
+  };
 
   const handleShowSearch = (toggle: boolean) => {
     setShowSearch(toggle);
@@ -115,7 +130,10 @@ const DynamicIsland = (): JSX.Element => {
                   placeholder="Search for anything..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={handleInputKeyDown}
+                  onKeyDown={(e) => {
+                    handleInputKeyDown(e);
+                    handleApplySearch(e);
+                  }}
                 />
               </div>
               <button
@@ -195,9 +213,11 @@ const SuggestionButton = (
   return (
     <button
       className={
-        "bg-white/30 border border-white/20 text-xs px-3 py-1 rounded-full focus:outline-none text-white flex items-center gap-1 backdrop-blur-3xl hover:bg-white/40" +
+        "bg-white/30 border border-white/20 text-xs px-3 py-1 rounded-full focus:outline-none flex items-center gap-1 backdrop-blur-3xl hover:bg-white/40" +
         " " +
-        (props.searchSuggestion ? "border-neutral-200 text-black" : "")
+        (props.searchSuggestion
+          ? "border-neutral-200 text-black"
+          : "text-white")
       }
       {...otherProps}
     >
