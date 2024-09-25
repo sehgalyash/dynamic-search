@@ -7,19 +7,9 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
-import * as Popover from "@radix-ui/react-popover";
 
-// TODO: Start adding popover dmeo for adding custom flows
-{
-  /* <Popover.Root>
-          <Popover.Portal>
-            <Popover.Content>
-              <Popover.Close />
-              <Popover.Arrow />
-            </Popover.Content>
-          </Popover.Portal>
-        </Popover.Root> */
-}
+const USER_PROFILE_IMAGE: string =
+  "https://avatars.githubusercontent.com/u/62352288?v=4" as const;
 
 const DynamicIslandWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -73,9 +63,30 @@ const DynamicIsland = (): JSX.Element => {
               </div>
               <AskAIButton onClick={() => handleShowSearch(true)} />
               <div className="flex items-center gap-1">
-                <SuggestionButton>High priority</SuggestionButton>
-                <SuggestionButton>My open projects</SuggestionButton>
-                <SuggestionButton>Add reminder</SuggestionButton>
+                <SuggestionButton
+                  onClick={() => {
+                    handleShowSearch(true);
+                    setSearchQuery("High priority");
+                  }}
+                >
+                  High priority
+                </SuggestionButton>
+                <SuggestionButton
+                  onClick={() => {
+                    handleShowSearch(true);
+                    setSearchQuery("My open projects");
+                  }}
+                >
+                  My open projects
+                </SuggestionButton>
+                <SuggestionButton
+                  onClick={() => {
+                    handleShowSearch(true);
+                    setSearchQuery("Add reminder");
+                  }}
+                >
+                  Add reminder
+                </SuggestionButton>
               </div>
             </motion.div>
           ) : (
@@ -95,11 +106,11 @@ const DynamicIsland = (): JSX.Element => {
                 />
                 <input
                   className="bg-transparent focus:outline-none px-1.5 text-white text-sm w-full placeholder:text-white/60"
-                  onBlur={() => {
-                    if (searchQuery === "") {
-                      handleShowSearch(false);
-                    }
-                  }}
+                  // onBlur={() => {
+                  //   if (searchQuery === "") {
+                  //     handleShowSearch(false);
+                  //   }
+                  // }}
                   autoFocus
                   placeholder="Search for anything..."
                   value={searchQuery}
@@ -120,6 +131,40 @@ const DynamicIsland = (): JSX.Element => {
           )}
         </AnimatePresence>
       </motion.div>
+      {showSearch && (
+        <motion.div
+          className="search-popover-content bg-white p-4 rounded-xl shadow-xl absolute z-20 top-12 border w-[560px]"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ delay: 0.6 }}
+        >
+          {searchQuery.length > 0 ? (
+            <></>
+          ) : (
+            <div className="search-suggestions-wrapper flex items-center justify-center gap-2">
+              <SuggestionButton
+                searchSuggestion
+                onClick={() => setSearchQuery("High priority")}
+              >
+                High priority
+              </SuggestionButton>
+              <SuggestionButton
+                searchSuggestion
+                onClick={() => setSearchQuery("My open projects")}
+              >
+                My open projects
+              </SuggestionButton>
+              <SuggestionButton
+                searchSuggestion
+                onClick={() => setSearchQuery("Add reminder")}
+              >
+                Add reminder
+              </SuggestionButton>
+            </div>
+          )}
+        </motion.div>
+      )}
     </DynamicIslandWrapper>
   );
 };
@@ -142,15 +187,25 @@ const AskAIButton = (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
 };
 
 const SuggestionButton = (
-  props: React.ButtonHTMLAttributes<HTMLButtonElement>
+  props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+    searchSuggestion?: boolean;
+  }
 ) => {
   const { children, ...otherProps } = props;
   return (
     <button
-      className="bg-white/30 border border-white/20 text-xs px-3 py-1 rounded-full focus:outline-none text-white flex items-center gap-1 backdrop-blur-3xl hover:bg-white/40"
+      className={
+        "bg-white/30 border border-white/20 text-xs px-3 py-1 rounded-full focus:outline-none text-white flex items-center gap-1 backdrop-blur-3xl hover:bg-white/40" +
+        " " +
+        (props.searchSuggestion ? "border-neutral-200 text-black" : "")
+      }
       {...otherProps}
     >
-      <IconCornerDownLeft size={14} strokeWidth={2} className="text-white" />
+      <IconCornerDownLeft
+        size={14}
+        strokeWidth={2}
+        className={props.searchSuggestion ? "text-black" : "text-white"}
+      />
       {children}
     </button>
   );
