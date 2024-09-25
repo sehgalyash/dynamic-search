@@ -1,7 +1,25 @@
 import React from "react";
 import PixyAvatar from "../../assets/pixy.png";
-import { IconBell, IconCornerDownLeft, IconHistory } from "@tabler/icons-react";
+import {
+  IconBell,
+  IconCornerDownLeft,
+  IconHistory,
+  IconX,
+} from "@tabler/icons-react";
 import { motion, AnimatePresence } from "framer-motion";
+import * as Popover from "@radix-ui/react-popover";
+
+// TODO: Start adding popover dmeo for adding custom flows
+{
+  /* <Popover.Root>
+          <Popover.Portal>
+            <Popover.Content>
+              <Popover.Close />
+              <Popover.Arrow />
+            </Popover.Content>
+          </Popover.Portal>
+        </Popover.Root> */
+}
 
 const DynamicIslandWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -19,10 +37,16 @@ const DynamicIsland = (): JSX.Element => {
     setShowSearch(toggle);
   };
 
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") {
+      handleShowSearch(false);
+    }
+  };
+
   return (
     <DynamicIslandWrapper>
       <motion.div
-        className="dynamic-island ai-gradient p-1 flex items-center gap-1 rounded-full z-20"
+        className="dynamic-island ai-gradient p-1 flex items-center gap-1 rounded-full z-20 h-[34px]"
         initial={{ opacity: 0, scale: 0.4 }}
         animate={{ opacity: 1, scale: 1 }}
       >
@@ -57,19 +81,41 @@ const DynamicIsland = (): JSX.Element => {
           ) : (
             <motion.div
               key="search-view"
-              className="flex items-center w-full"
+              className="flex items-center w-full pl-1"
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: "560px", opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <input
-                className="bg-transparent focus:outline-none px-3 text-white text-sm w-full"
-                onBlur={() => handleShowSearch(false)}
-                autoFocus
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+              <div className="flex items-center w-full">
+                <img
+                  src={PixyAvatar}
+                  className="w-4 h-4 rounded-full"
+                  alt="pixy-avatar"
+                />
+                <input
+                  className="bg-transparent focus:outline-none px-1.5 text-white text-sm w-full placeholder:text-white/60"
+                  onBlur={() => {
+                    if (searchQuery === "") {
+                      handleShowSearch(false);
+                    }
+                  }}
+                  autoFocus
+                  placeholder="Search for anything..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleInputKeyDown}
+                />
+              </div>
+              <button
+                className="bg-white/20 text-white/60 rounded-full p-1 focus:outline-none border border-white/20"
+                onClick={() => {
+                  handleShowSearch(false);
+                  setSearchQuery("");
+                }}
+              >
+                <IconX size={16} strokeWidth={2} />
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
