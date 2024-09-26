@@ -234,17 +234,62 @@ const DynamicIsland = (): JSX.Element => {
         if (searchSuggestion) {
           return (
             <>
-              <SuggestionButton searchSuggestion></SuggestionButton>
-              <SuggestionButton searchSuggestion></SuggestionButton>
-              <SuggestionButton searchSuggestion></SuggestionButton>
+              <SuggestionButton
+                searchSuggestion
+                onClick={() => {
+                  handleShowSearch(true);
+                  setSearchQuery("Add sizes");
+                }}
+              >
+                Add sizes
+              </SuggestionButton>
+              <SuggestionButton
+                searchSuggestion
+                onClick={() => {
+                  handleShowSearch(true);
+                  setSearchQuery("Import CSV");
+                }}
+              >
+                Import CSV
+              </SuggestionButton>
+              <SuggestionButton
+                searchSuggestion
+                onClick={() => {
+                  handleShowSearch(true);
+                  setSearchQuery("Predict performance");
+                }}
+              >
+                Predict performance
+              </SuggestionButton>
             </>
           );
         } else {
           return (
             <>
-              <SuggestionButton></SuggestionButton>
-              <SuggestionButton></SuggestionButton>
-              <SuggestionButton></SuggestionButton>
+              <SuggestionButton
+                onClick={() => {
+                  handleShowSearch(true);
+                  setSearchQuery("Add sizes");
+                }}
+              >
+                Add sizes
+              </SuggestionButton>
+              <SuggestionButton
+                onClick={() => {
+                  handleShowSearch(true);
+                  setSearchQuery("Import CSV");
+                }}
+              >
+                Import CSV
+              </SuggestionButton>
+              <SuggestionButton
+                onClick={() => {
+                  handleShowSearch(true);
+                  setSearchQuery("Predict performance");
+                }}
+              >
+                Predict performance
+              </SuggestionButton>
             </>
           );
         }
