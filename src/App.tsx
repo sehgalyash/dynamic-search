@@ -1,5 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import ProjectsPage from "./pages/projects-page";
+import EditorPage from "./pages/editor-page";
 
 type RouteType = {
   route: string; // eg, route: projects
@@ -8,6 +9,7 @@ type RouteType = {
 
 const ROUTES: RouteType[] = [
   { route: "projects", component: <ProjectsPage /> },
+  { route: "editor", component: <EditorPage /> },
 ];
 
 const App = () => {

@@ -15,6 +15,11 @@
   @apply bg-cover relative overflow-hidden;
 }
 
+.editor-page {
+  background-image: url("./assets/editor-page.png");
+  @apply bg-cover relative overflow-hidden;
+}
+
 .ai-gradient {
   background: linear-gradient(
     90deg,

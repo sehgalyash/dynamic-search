@@ -173,6 +173,84 @@ const DynamicIsland = (): JSX.Element => {
     handleShowSearch(true);
   };
 
+  const getSuggestionsByPathname = (searchSuggestion: boolean) => {
+    switch (window.location.pathname) {
+      case "/projects":
+        if (searchSuggestion) {
+          return (
+            <>
+              <SuggestionButton
+                searchSuggestion
+                onClick={handleHighPriorityClick}
+              >
+                High priority
+              </SuggestionButton>
+              <SuggestionButton
+                searchSuggestion
+                onClick={() => {
+                  handleShowSearch(true);
+                  setSearchQuery("My open projects");
+                }}
+              >
+                My open projects
+              </SuggestionButton>
+              <SuggestionButton
+                searchSuggestion
+                onClick={() => {
+                  handleShowSearch(true);
+                  setSearchQuery("Add reminder");
+                }}
+              >
+                Add reminder
+              </SuggestionButton>
+            </>
+          );
+        } else {
+          return (
+            <>
+              <SuggestionButton onClick={handleHighPriorityClick}>
+                High priority
+              </SuggestionButton>
+              <SuggestionButton
+                onClick={() => {
+                  handleShowSearch(true);
+                  setSearchQuery("My open projects");
+                }}
+              >
+                My open projects
+              </SuggestionButton>
+              <SuggestionButton
+                onClick={() => {
+                  handleShowSearch(true);
+                  setSearchQuery("Add reminder");
+                }}
+              >
+                Add reminder
+              </SuggestionButton>
+            </>
+          );
+        }
+      case "/editor":
+        if (searchSuggestion) {
+          return (
+            <>
+              <SuggestionButton searchSuggestion></SuggestionButton>
+              <SuggestionButton searchSuggestion></SuggestionButton>
+              <SuggestionButton searchSuggestion></SuggestionButton>
+            </>
+          );
+        } else {
+          return (
+            <>
+              <SuggestionButton></SuggestionButton>
+              <SuggestionButton></SuggestionButton>
+              <SuggestionButton></SuggestionButton>
+            </>
+          );
+        }
+    }
+  };
+
   return (
     <DynamicIslandWrapper>
       <motion.div
@@ -203,25 +281,7 @@ const DynamicIsland = (): JSX.Element => {
               </div>
               <AskAIButton onClick={() => handleShowSearch(true)} />
               <div className="flex items-center gap-1">
-                <SuggestionButton onClick={handleHighPriorityClick}>
-                  High priority
-                </SuggestionButton>
-                <SuggestionButton
-                  onClick={() => {
-                    handleShowSearch(true);
-                    setSearchQuery("My open projects");
-                  }}
-                >
-                  My open projects
-                </SuggestionButton>
-                <SuggestionButton
-                  onClick={() => {
-                    handleShowSearch(true);
-                    setSearchQuery("Add reminder");
-                  }}
-                >
-                  Add reminder
-                </SuggestionButton>
+                {getSuggestionsByPathname(false)}
               </div>
             </motion.div>
           ) : (
@@ -288,24 +348,7 @@ const DynamicIsland = (): JSX.Element => {
             <div className="search-chat-container"></div>
           ) : (
             <div className="search-suggestions-wrapper flex items-center justify-center gap-2">
-              <SuggestionButton
-                searchSuggestion
-                onClick={handleHighPriorityClick}
-              >
-                High priority
-              </SuggestionButton>
-              <SuggestionButton
-                searchSuggestion
-                onClick={() => setSearchQuery("My open projects")}
-              >
-                My open projects
-              </SuggestionButton>
-              <SuggestionButton
-                searchSuggestion
-                onClick={() => setSearchQuery("Add reminder")}
-              >
-                Add reminder
-              </SuggestionButton>
+              {getSuggestionsByPathname(true)}
             </div>
           )}
         </motion.div>
